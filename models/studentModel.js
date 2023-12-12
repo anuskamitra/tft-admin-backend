@@ -5,7 +5,7 @@ const studentSchema=mongoose.Schema(
         Email:{type:String,required:true},
         College:{
             type:mongoose.Schema.Types.ObjectId,
-            ref:"College"
+            ref:"College",
         },
         Birthday:{type:String},
         Department:{type:String},   

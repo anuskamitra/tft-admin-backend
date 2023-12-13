@@ -5,6 +5,7 @@ const cors=require("cors");
 const userRouter=require("./routes/userRoutes")
 const studentRouter=require("./routes/studentRoute")
 const collegeRouter=require("./routes/collegeRoute")
+const departmentRouter=require("./routes/departmentRoute")
 const connectDB =require("./config/db")
 
 const app=express();
@@ -27,6 +28,9 @@ app.use("/user",userRouter)
 app.use("/api",studentRouter)
 
 app.use("/college",collegeRouter)
+
+app.use("/department",departmentRouter)
+
 
 const port=process.env.PORT;
 app.listen(port,function(req,res){

@@ -7,8 +7,14 @@ const studentSchema=mongoose.Schema(
             type:mongoose.Schema.Types.ObjectId,
             ref:"College",
         },
+        Photo:{type:String,
+            default:"avatar.png"
+        },
         Birthday:{type:String},
-        Department:{type:String},   
+        Department:{
+            type:mongoose.Schema.Types.ObjectId,
+            ref:"Department",
+        },
     },
     {
         timestamps: true,

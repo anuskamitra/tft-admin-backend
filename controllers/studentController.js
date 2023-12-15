@@ -89,17 +89,20 @@ const deleteStudent=async(req,res)=>{
     const Email=req.body.Email
     const id=req.body._id;
     const collegeId=req.body.College._id;
-    const departmentId=req.body.Department._id
+    const departmentId=req.body.Department?._id
     const result=await Student.deleteOne({Email})
     const pullCollege= await College.findByIdAndUpdate(collegeId,
         { $pull: { Students: id } },
         { new: true }
       );
+      if(departmentId){
     const pullDepartment= await Department.findByIdAndUpdate(departmentId,
         { $pull: { Students: id } },
         { new: true }
       );
       console.log(pullDepartment)
+    }
+    
     console.log(result);
     res.status(200).send(result);
 }

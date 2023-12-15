@@ -11,6 +11,12 @@ const collegeSchema=new mongoose.Schema({
             type:mongoose.Schema.Types.ObjectId,
             ref:"Student"
         }
+    ],
+    Departments:[
+        {
+            type:mongoose.Schema.Types.ObjectId,
+            ref:"Department"
+        }
     ]
 },
 {

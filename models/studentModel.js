@@ -14,6 +14,7 @@ const studentSchema=mongoose.Schema(
         Department:{
             type:mongoose.Schema.Types.ObjectId,
             ref:"Department",
+            default:null
         },
     },
     {

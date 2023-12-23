@@ -32,6 +32,7 @@ app.use("/college",collegeRouter)
 app.use("/department",departmentRouter)
 
 
+
 const port=process.env.PORT;
 app.listen(port,function(req,res){
     console.log("listening at "+ port);

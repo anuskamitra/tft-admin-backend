@@ -24,6 +24,7 @@ const registerUser=async(req,res)=>{
                res.status(201).json({
                 _id:createdUser._id,
                 name:createdUser.Name,
+                email:createdUser.Email,
                 token:generateToken(createdUser._id)
                })
            }
@@ -53,6 +54,8 @@ const authUser=async(req,res)=>{
             res.status(201).json({
                 _id:foundUser._id,
                 name:foundUser.Name,
+                email:foundUser.Email,
+                typeOfUser:"Admin",
                 token:generateToken(foundUser._id)
             })
           } else {  

@@ -10,12 +10,14 @@ const addStudent=async(req,res)=>{
             res.send("alreadyexist")
         }
         else{
+            console.log("....................."+req.body.photoInFileFormat)
             const createStudent=await Student.create({
                 Name:req.body.name,
                 Email:req.body.email,
                 College:req.body.college,
                 Birthday:req.body.birthDay,
-                Department:req.body.department,   
+                Department:req.body.department, 
+                PhotoInFileFormat:req.body.photoInFileFormat,  
                 Photo:req.body.photo||"avatar.png"
             })
             
@@ -111,10 +113,20 @@ const fetchStudents=async(req,res)=>{
     const studentList=await Student.find().populate('College').populate('Department')
     res.send(studentList)
 }
+const fetchStudentsForCollege=async(req,res)=>{
+    const id=req.body.collegeId;
+    const studentList=await Student.find({College:id}).populate("College").populate('Department')
+    res.send(studentList);
+}
 
 const fetchStudentToUpdate=async(req,res)=>{
     const id=req.body.id
     const student=await Student.findOne({_id:id}).populate("College").populate('Department')
     res.send(student)
 }
-module.exports={addStudent,updateStudent,deleteStudent,fetchStudents,fetchStudentToUpdate};
+const countStudents=async(req,res)=>{
+    id=req.body.collegeId;
+    const count=await Student.find({College:id}).countDocuments().exec();
+    res.json({count});
+}
+module.exports={addStudent,updateStudent,deleteStudent,fetchStudents,fetchStudentsForCollege,fetchStudentToUpdate,countStudents};

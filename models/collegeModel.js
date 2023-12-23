@@ -1,8 +1,8 @@
 const mongoose=require("mongoose")
-const Student=require("./studentModel")
 const collegeSchema=new mongoose.Schema({
     Name:{type:String,required:true},
     Email:{type:String,required:true},
+    Password:{type:String,required:true},
     State:{type:String},
     City:{type:String},
     Rating:{type:Number},
@@ -24,6 +24,6 @@ const collegeSchema=new mongoose.Schema({
 }
 )
 
-
 const College=new mongoose.model("College",collegeSchema);
+
 module.exports=College;

@@ -214,7 +214,9 @@ const result=await College.updateOne(
 })
 router.post("/fetchonecollege",async(req,res)=>{
   const collegeId=req.body.collegeId;
+
   const college=await College.findOne({_id:collegeId}).populate("Departments")
+  
   res.send(college);
 })
 module.exports = router;

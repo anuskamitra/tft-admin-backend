@@ -25,6 +25,7 @@ const registerUser=async(req,res)=>{
                 _id:createdUser._id,
                 name:createdUser.Name,
                 email:createdUser.Email,
+                typeOfUser:"Admin",
                 token:generateToken(createdUser._id)
                })
            }

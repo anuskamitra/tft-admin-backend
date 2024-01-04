@@ -6,6 +6,7 @@ const userRouter=require("./routes/userRoutes")
 const studentRouter=require("./routes/studentRoute")
 const collegeRouter=require("./routes/collegeRoute")
 const departmentRouter=require("./routes/departmentRoute")
+const professorRoute=require("./routes/professorRoute")
 const connectDB =require("./config/db")
 
 const app=express();
@@ -18,6 +19,7 @@ app.use(cors({
 
 app.use(express.json());
 
+app.use("/files",express.static("files"))
 connectDB();
 
 app.get("/",function(req,res){
@@ -31,7 +33,7 @@ app.use("/college",collegeRouter)
 
 app.use("/department",departmentRouter)
 
-
+app.use("/professor",professorRoute)
 
 const port=process.env.PORT;
 app.listen(port,function(req,res){

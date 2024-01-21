@@ -5,6 +5,7 @@ const collegeSchema=new mongoose.Schema({
     Password:{type:String,required:true},
     State:{type:String},
     City:{type:String},
+    BlackListed:{type:Boolean, default:false},
     Rating:{type:Number},
     Students:[
         {
@@ -17,11 +18,19 @@ const collegeSchema=new mongoose.Schema({
             type:mongoose.Schema.Types.ObjectId,
             ref:"Department"
         }
-    ]
+    ],
+    Holidays:[{
+        StartDate:{type:String},
+        EndDate:{type:String},
+        StartDay:{type:String},
+        EndDay:{type:String},
+        Reason:{type:String},
+    }]
 },
 {
     timestamps: true,
 }
+
 )
 
 const College=new mongoose.model("College",collegeSchema);

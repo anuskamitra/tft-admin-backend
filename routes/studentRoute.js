@@ -14,7 +14,7 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage })
 
-const {addStudent,updateStudent, deleteStudent,countStudents,fetchStudents,fetchStudentsForCollege, loginStudent, fetchOneStudent,updateMobile,updateEmail,uploadResult,deleteResult}=require("../controllers/studentController")
+const {addStudent,updateStudent, deleteStudent,countStudents,fetchStudents,fetchStudentsForCollege, loginStudent, fetchOneStudent,updateMobile,updateEmail,uploadResult,deleteResult,fetchAlumni}=require("../controllers/studentController")
 
 router.post("/addnew",addStudent)
 router.post("/fetchOneStudent",fetchOneStudent)
@@ -28,5 +28,6 @@ router.post("/updateMobile",updateMobile)
 router.post("/updateEmail",updateEmail)
 router.post("/uploadResult",upload.single("result"),uploadResult)
 router.post("/deleteResult",deleteResult)
+router.post("/fetchAlumni",fetchAlumni)
 
 module.exports=router

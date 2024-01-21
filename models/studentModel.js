@@ -3,6 +3,9 @@ const studentSchema=mongoose.Schema(
     {
         Name:{type:String,required:true},
         Email:{type:String,required:true},
+        Alumni:{type:Boolean,default:false},
+        PassingYear:{type:String},
+        CGPA:{type:String},
         College:{
             type:mongoose.Schema.Types.ObjectId,
             ref:"College",
@@ -23,7 +26,9 @@ const studentSchema=mongoose.Schema(
         Sem:{type:Number},
         Results:[{
             Title:{type:Number},
-            Result:{type:String}
+            Result:{type:String},
+            ResultStatus:{type:Boolean}
+
         }]
     },
     {

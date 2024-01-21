@@ -16,6 +16,8 @@ const addStudent = async (req, res) => {
       res.send("alreadyexist");
     } else {
       console.log("....................." + req.body.password);
+      console.log(req.body.passingDate);
+      let passingYear=req.body.passingDate?.substring(0,4);
        bcrypt.hash(Password,saltRound,async(err,hash)=>{
         createStudent = await Student.create({
             Name: req.body.name,
@@ -29,6 +31,7 @@ const addStudent = async (req, res) => {
             Father:req.body.fatherName,
             Mother:req.body.motherName,
             Mobile:req.body.mobile,
+            PassingYear:passingYear||"2023",
             Sem:req.body.sem,
           });
        })
@@ -58,16 +61,26 @@ const addStudent = async (req, res) => {
 const updateStudent = async (req, res) => {
   const id = req.body.id;
   const currentStudent = await Student.findOne({ _id: id });
-  console.log(currentStudent)
   let Password = req.body.password;
   console.log(req.body.fatherName)
   let result="";
 
   try {
-    console.log("in here")
+ if(currentStudent.Email!=req.body.email){
+  const changedEmail=req.body.email
+  
+ const ifExist= await Student.findOne({ Email: changedEmail });
+ if(ifExist){
+  console.log("----------------------------67"+req.body.email)
+  res.send("alreadyexist");
 
+  return;
+ }
+ }
     if (currentStudent.Password != Password) {
-        console.log("in here")
+      console.log("....................." + req.body.password);
+      console.log(req.body.passingDate);
+      let passingYear=req.body.passingDate?.substring(0,4);
       bcrypt.hash(Password, saltRound, async (err, hash) => {
          result = await Student.updateOne(
           { _id: id },
@@ -85,13 +98,18 @@ const updateStudent = async (req, res) => {
               Photo: req.body.photo,
               Father:req.body.fatherName,
               Mother:req.body.motherName,
-              Mobile:req.body.mobile
+              Mobile:req.body.mobile,
+              PassingYear:passingYear||"2023",
             },
           }
         );
       });
     }
     else{
+      console.log("....................." + req.body.password);
+      console.log(req.body.passingDate);
+      let passingYear=req.body.passingDate?.substring(0,4);
+      console.log("----------------------------101"+req.body.email)
         result = await Student.updateOne(
             { _id: id },
             {
@@ -107,7 +125,8 @@ const updateStudent = async (req, res) => {
                 Sem:req.body.sem,
                 Father:req.body.fatherName,
               Mother:req.body.motherName,
-              Mobile:req.body.mobile
+              Mobile:req.body.mobile,
+              PassingYear:passingYear||"2023",
               },
             }
           );
@@ -187,6 +206,13 @@ const fetchStudentsForCollege = async (req, res) => {
     .populate("Department");
   res.send(studentList);
 };
+const fetchAlumni=async(req,res)=>{
+  const year=req.body.year;
+  console.log("-----------------"+year)
+  const alumniList=await Student.find({Alumni:true,PassingYear:year}).populate("College").populate("Department");
+  console.log("------------------------------"+alumniList)
+   res.send(alumniList)
+}
 
 const fetchOneStudent= async (req, res) => {
   const id = req.body.id;
@@ -198,13 +224,23 @@ const fetchOneStudent= async (req, res) => {
 };
 const countStudents = async (req, res) => {
   id = req.body.collegeId;
-  const count = await Student.find({ College: id }).countDocuments().exec();
-  res.json({ count });
+  const studentList = await Student.find({ College: id })
+  console.log("---------------------------------------------------"+studentList)
+  res.send(studentList);
 };
 const updateMobile=async(req,res)=>{
   const id=req.body.id;
-  const result=await Student.find({_id:id})
-  console.log(result);
+  console.log("----------------------------------------214"+id)
+    const result=await Student.updateOne({_id:id},
+      {
+        $set:{
+          Mobile:req.body.newNumber
+        }
+      })
+  if(result){
+    res.send("ok")
+  }
+  
 }
 const updateEmail=async(req,res)=>{
   const id=req.body.id;
@@ -221,26 +257,53 @@ const updateEmail=async(req,res)=>{
 }
 
 const uploadResult=async(req,res)=>{
+  let responseToBeSent="";
   console.log("-----------------------------------------------"+req.body.id);
   console.log(req.file)
+  console.log(req.body.status)
+  const resultStatus=req.body.status;
   const Title=req.body.title
   const Result=req.file?.filename;
   const id=req.body.id;
  try{
   const newResult={
     Title:Title,
-    Result:Result
+    Result:Result,
+    ResultStatus:resultStatus
   }
-  const response =await Student.updateOne({_id:id},
+  responseToBeSent =await Student.updateOne({_id:id},
     { $push: { Results: newResult } }
 
     )
-    console.log(response)
-    res.send(response)
+    console.log(responseToBeSent)
+   
 
  }catch(err){
   console.log(err)
  }
+
+ const studentTOCheck=await Student.findOne({_id:id});
+
+ console.log(studentTOCheck.Results)
+ 
+ if(studentTOCheck.Results.length==4){
+  let flag=0;
+  for(let i=0;i<4;i++){
+    if(studentTOCheck.Results[i].ResultStatus==false){
+      flag=1;
+      break; 
+    }
+  }
+  if(flag==0){
+    const response=await Student.updateOne({_id:id},
+     {$set: {Alumni:true}}
+      )
+      console.log(response);
+  }
+
+  }
+ res.send(responseToBeSent)
+
   
 }
 const deleteResult=async(req,res)=>{
@@ -262,13 +325,16 @@ if(pullResult){
 const loginStudent = async (req, res) => {
   const { email, password } = req.body;
   try {
-    console.log("-----------line 26" + email + password);
-    const foundUser = await Student.findOne({ Email: email });
+    const foundUser = await Student.findOne({ Email: email }).populate("College");
     if (!foundUser) {
         console.log("notFound");
       res.send("notFound");
     } else {
-
+        console.log("-----------------------------------------288"+ foundUser);
+        if(foundUser.College.BlackListed){
+          res.send("BlackListed");
+        }
+        else{
       bcrypt.compare(password, foundUser.Password, async (err, result) => {
         if (result == true) {
 
@@ -285,7 +351,9 @@ const loginStudent = async (req, res) => {
             console.log("Found");
           res.send("wrongPassword");
         }
+      
       });
+    }
     }
   } catch (err) {
     console.log("error in login" + err);
@@ -303,5 +371,6 @@ module.exports = {
   updateMobile,
   updateEmail,
   uploadResult,
-  deleteResult
+  deleteResult,
+  fetchAlumni
 };

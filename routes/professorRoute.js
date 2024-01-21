@@ -28,7 +28,7 @@ router.post("/addnew",async(req,res)=>{
     }
     else{
         const professor=await Professor.create({
-            Photo,
+            Photo:Photo||"avatar.png",
             Name,
             Email,
             College,

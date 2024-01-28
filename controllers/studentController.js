@@ -336,13 +336,14 @@ const loginStudent = async (req, res) => {
         }
         else{
       bcrypt.compare(password, foundUser.Password, async (err, result) => {
-        if (result == true) {
-
-          console.log(foundUser.Email);
+        if (result === true) {
+          console.log(foundUser.College._id);
           res.status(201).json({
             _id: foundUser._id,
             name: foundUser.Name,
             email: foundUser.Email,
+            department:foundUser.Department,
+            college:foundUser.College._id,
             typeOfUser: "Student",
             sem:foundUser.Sem,
             token: generateToken(foundUser._id),

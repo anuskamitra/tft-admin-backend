@@ -25,7 +25,9 @@ const collegeSchema=new mongoose.Schema({
         StartDay:{type:String},
         EndDay:{type:String},
         Reason:{type:String},
-    }]
+    }],
+    
+
 },
 {
     timestamps: true,

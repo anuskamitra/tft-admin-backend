@@ -7,6 +7,7 @@ const studentRouter=require("./routes/studentRoute")
 const collegeRouter=require("./routes/collegeRoute")
 const departmentRouter=require("./routes/departmentRoute")
 const professorRoute=require("./routes/professorRoute")
+const samplePaperRoute=require("./routes/samplePaperRoute")
 const connectDB =require("./config/db")
 
 const app=express();
@@ -34,6 +35,8 @@ app.use("/college",collegeRouter)
 app.use("/department",departmentRouter)
 
 app.use("/professor",professorRoute)
+
+app.use("/samplePaper",samplePaperRoute);
 
 const port=process.env.PORT;
 app.listen(port,function(req,res){

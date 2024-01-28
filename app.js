@@ -12,7 +12,7 @@ const connectDB =require("./config/db")
 
 const app=express();
 env.config();
-
+// env.config({path:"../.env"});
 app.use(cors({
     origin:"http://localhost:3000",
     credentials:true

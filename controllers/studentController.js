@@ -258,13 +258,12 @@ const updateEmail=async(req,res)=>{
 
 const uploadResult=async(req,res)=>{
   let responseToBeSent="";
-  console.log("-----------------------------------------------"+req.body.id);
-  console.log(req.file)
-  console.log(req.body.status)
   const resultStatus=req.body.status;
   const Title=req.body.title
-  const Result=req.file?.filename;
+  const Result=req.body.result;
   const id=req.body.id;
+  console.log("-----------------------------------------------"+resultStatus+" "+Title+" "+Result+" "+id);
+
  try{
   const newResult={
     Title:Title,

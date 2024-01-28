@@ -2,23 +2,24 @@ const express=require("express");
 const SamplePaper =require("../models/samplePaperModel");
 const router=express.Router();
 
-const multer=require("multer");
+// const multer=require("multer");
 
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, "./files")
-  },
-  filename: function (req, file, cb) {
-    const uniqueSuffix = Date.now()
-    cb(null, uniqueSuffix + '-' +file.originalname)
-  }
-})
+// const storage = multer.diskStorage({
+//   destination: function (req, file, cb) {
+//     cb(null, "./files")
+//   },
+//   filename: function (req, file, cb) {
+//     const uniqueSuffix = Date.now()
+//     cb(null, uniqueSuffix + '-' +file.originalname)
+//   }
+// })
 
-const upload = multer({ storage: storage })
+// const upload = multer({ storage: storage })
 
-router.post("/addPaper",upload.single("paper"),async(req,res)=>{
-  const {CollegeID,Semester,DepartmentID,SubjectName}=req.body
-  const PDF=req.file?.filename;
+router.post("/addPaper",async(req,res)=>{
+  console.log(req.body)
+  const {CollegeID,Semester,DepartmentID,SubjectName,PDF}=req.body
+  // const PDF=req.file?.filename;
   console.log( {CollegeID,Semester,DepartmentID,SubjectName,PDF});
   const response=await SamplePaper.create({CollegeID,Semester,DepartmentID,SubjectName,PDF})
 

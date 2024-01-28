@@ -14,7 +14,7 @@ const app=express();
 env.config();
 // env.config({path:"../.env"});
 app.use(cors({
-    origin:"http://localhost:3000",
+    origin:["http://localhost:3000","https://tft-admin-backend.onrender.com"],
     credentials:true
 }))
 
